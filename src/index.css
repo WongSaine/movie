@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+.ant-tabs-nav-list {
+  justify-content: center;
+  width: 100%;
+}
+
+.ant-card-body {
+  width: 100%;
+}
+
+.ant-typography {
+  word-break: normal;
+}
+
+@media screen and (max-width: 576px) {
+  .ant-card-cover {
+    width: 60px;
+    height: 91px;
+    position: absolute;
+    left: 10px;
+    top: 6px;
+  }
+
+  .ant-card .ant-card-body {
+    padding: 6px 10px;
+  }
+}
