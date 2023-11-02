@@ -14,7 +14,7 @@ const FilmList = ({ films, setRatingHandler }) => {
       {films.length ? (
         <Row className={classes['film-list']} gutter={[16, 16]}>
           {films.map((film) => (
-            <Col key={film.id} xs={{ span: 24, offset: 0 }} md={{ span: 12 }}>
+            <Col key={film.id} xs={{ span: 22, offset: 0 }} md={{ span: 12 }}>
               <FilmCard film={film} setRatingHandler={setRatingHandler} />
             </Col>
           ))}

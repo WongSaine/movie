@@ -54,6 +54,12 @@ export default class App extends Component {
   setIsLoading = (isLoading) => {
     this.setState({ isLoading });
   }
+
+  setCurrentPage = (page) => {
+    this.setState({
+      currentPage: page
+    });
+  }
   
   componentDidMount() {
     const createSession = async () => await this.state.movie.createGuestSession()
@@ -110,6 +116,7 @@ export default class App extends Component {
     ]
 
     return (
+      
       <ConfigProvider
         theme={{
           token: {
@@ -126,7 +133,7 @@ export default class App extends Component {
         >
           <Layout style={{ backgroundColor: '#fff' }}>
             <Content>
-              <Col xs={{ span: 22, offset: 1 }} md={{ span: 14, offset: 4 }}>
+              <Col xs={{ span: 22, offset: 1 }} md={{ span: 18, offset: 4 }}>
                 <Tabs
                   defaultActiveKey={1}
                   items={tabs}
@@ -156,7 +163,7 @@ export default class App extends Component {
                         showSizeChanger={false}
                         hideOnSinglePage={true}
                         style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}
-                        onChange={(page) => this.onPageChange(page)}
+                        onChange={(page) => this.setCurrentPage(page)}
                         itemRender={this.paginationItemRender}
                       />
                     </>

@@ -1,7 +1,7 @@
 .film-card {
   display: flex;
   border-radius: 0;
-  height: 280px;
+  height: 300px;
   filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
 }
 
@@ -10,19 +10,26 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  font-weight: 100 !important;
+  padding-bottom: 0ch;
 }
 
 .film-card__content {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 0 10px;
+  padding: 0px;
+  font-size: 10px;
+}
+
+.film-card__content * {
+  margin: 0;
 }
 
 .film-card__image {
-  width: auto;
+  max-width: 18rem;
   height: 100%;
-  min-width: 183px;
+  min-width: 10rem;
   border-radius: 0 !important;
   object-fit: cover;
 }
@@ -31,7 +38,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 2px solid;
+  border: 1px solid;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,10 +71,6 @@
     margin-top: 20px;
     display: flex;
     flex-direction: column;
-  }
-
-  .film-card__stars {
-    margin-left: auto;
   }
 
   .film-card__content {
