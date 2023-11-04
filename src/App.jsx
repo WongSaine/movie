@@ -1,18 +1,20 @@
-import React, {Component} from 'react'
-import { Alert, Col, ConfigProvider, Layout, Pagination, Row, Spin, Tabs } from 'antd'
+/* eslint-disable react/jsx-no-constructed-context-values */
+import React, { Component } from 'react';
+// eslint-disable-next-line object-curly-newline
+import { Alert, Col, ConfigProvider, Layout, Pagination, Row, Spin, Tabs } from 'antd';
 
-import MovieService from './services/MovieService.js'
-import SearchTab from './components/SearchTab'
-import RatedTab from './components/RatedTab'
-import FilmList from './components/FilmList'
-import FetcherService from './services/FetcherService.js';
-import { Context } from './services/Context.js';
+import MovieService from './services/MovieService';
+import SearchTab from './components/SearchTab';
+import RatedTab from './components/RatedTab';
+import FilmList from './components/FilmList';
+import FetcherService from './services/FetcherService';
+import { Context } from './services/Context';
 
 const { Content } = Layout;
 
 export default class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       movie: new MovieService(),
       genres: [],
@@ -23,68 +25,95 @@ export default class App extends Component {
       error: false,
       ratedFilms: [],
       fetcher: new FetcherService(),
+    };
+  }
+
+  async componentDidMount() {
+    const { movie, fetcher } = this.state;
+    
+    const createSession = async () => {
+      const x = await movie.createGuestSession();
+      return x;
+    };
+    await createSession();
+    fetcher.fetch(this.getGenres, (error) => this.setState({ error }));
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { fetcher } = this.state;
+    if (prevState.fetcher.state.loading !== fetcher.state.loading) {
+      this.setState({ isLoading: fetcher.state.loading });
+    }
+    if (prevState.fetcher.state.error !== fetcher.state.error) {
+      this.setState({ error: fetcher.state.error });
     }
   }
 
   changeRatingHandler = async (filmId, rating) => {
-    this.setState((oldState) => ({
-      ratedFilms: [...oldState.ratedFilms.filter((film) => film.id !== filmId), { id: filmId, rating }],
-    }))
-    await this.state.movie.addRatingToFilm(filmId, rating).catch((exception) => this.setState({ error: exception.message }))
-  }
+    const { movie } = this.state;
+    this.setState((state) => ({
+      // eslint-disable-next-line prettier/prettier
+      ratedFilms: [...state.ratedFilms.filter(
+        (film) => film.id !== filmId,
+      ), { id: filmId, rating }],
+    }));
+    /* eslint-disable prettier/prettier */
+    await movie.addRatingToFilm(filmId, rating).catch((exception) =>
+      // eslint-disable-next-line indent, implicit-arrow-linebreak
+        this.setState({ error: exception.message }));
+  };
+  /* eslint-enable  prettier/prettier */
 
   getGenres = async () => {
-    await this.state.movie.getGenreList().then((response) => {
-      this.setState({ genres: response.genres })
-    })
-  }
+    const { movie } = this.state;
+    await movie.getGenreList().then((response) => {
+      this.setState({ genres: response.genres });
+    });
+  };
 
   setError = (error) => {
     this.setState({ error });
-  }
+  };
 
   setFilms = (films) => {
-    this.setState({films});
-  }
+    this.setState({ films });
+  };
 
   setTotalItems = (totalItems) => {
     this.setState({ totalItems });
-  }
+  };
 
   setIsLoading = (isLoading) => {
     this.setState({ isLoading });
-  }
+  };
 
   setCurrentPage = (page) => {
     this.setState({
-      currentPage: page
+      currentPage: page,
     });
-  }
-  
-  componentDidMount() {
-    const createSession = async () => await this.state.movie.createGuestSession()
-    createSession()
-    this.state.fetcher.fetch(this.getGenres, (error) => this.setState({ error }))
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.fetcher.state.loading !== this.state.fetcher.state.loading) {
-      this.setState({ isLoading: this.state.fetcher.state.loading })
-    }
-    if (prevState.fetcher.state.error !== this.state.fetcher.state.error) {
-      this.setState({ error: this.state.fetcher.state.error })
-    }
-  }
+  };
 
   changeTabHandler = () => {
     this.setState({
       films: [],
       isLoading: true,
       currentPage: 1,
-    })
-  }
+    });
+  };
 
   render() {
+    /* eslint-disable prettier/prettier */
+    const {
+      currentPage,
+      ratedFilms,
+      movie,
+      genres,
+      error,
+      isLoading,
+      films,
+      totalItems,
+    } = this.state;
+    /* eslint-enable  prettier/prettier */
     const tabs = [
       {
         key: 1,
@@ -93,10 +122,10 @@ export default class App extends Component {
           <SearchTab
             setFilms={this.setFilms}
             setIsLoading={this.setIsLoading}
-            currentPage={this.state.currentPage}
+            currentPage={currentPage}
             setTotalItems={this.setTotalItems}
             setError={this.setError}
-            ratedFilms={this.state.ratedFilms}
+            ratedFilms={ratedFilms}
           />
         ),
       },
@@ -107,16 +136,15 @@ export default class App extends Component {
           <RatedTab
             setFilms={this.setFilms}
             setIsLoading={this.setIsLoading}
-            currentPage={this.state.currentPage}
+            currentPage={currentPage}
             setTotalItems={this.setTotalItems}
             setError={this.setError}
           />
         ),
       },
-    ]
+    ];
 
     return (
-      
       <ConfigProvider
         theme={{
           token: {
@@ -127,41 +155,42 @@ export default class App extends Component {
       >
         <Context.Provider
           value={{
-            movie: this.state.movie,
-            genres: this.state.genres,
+            movie,
+            genres,
           }}
         >
           <Layout style={{ backgroundColor: '#fff' }}>
             <Content>
-              <Col xs={{ span: 22, offset: 1 }} md={{ span: 18, offset: 4 }}>
+              <Col xs={{ span: 22, offset: 1 }} md={{ span: 17, offset: 4 }}>
                 <Tabs
                   defaultActiveKey={1}
                   items={tabs}
                   style={{ background: '#fff', justifyContent: 'center' }}
-                  destroyInactiveTabPane={true}
+                  destroyInactiveTabPane
                   onChange={this.changeTabHandler}
                 />
 
                 <>
-                  {this.state.error && <Alert type={'error'} message={this.state.error} style={{ margin: '10px auto' }} />}
-                  {this.state.isLoading ? (
+                  {error && <Alert type="error" message={error} style={{ margin: '10px auto' }} />}
+                  {isLoading ? (
                     <Row>
-                      <Spin tip={'Loading...'} style={{ margin: '10px auto' }} />
+                      <Spin tip="Loading..." style={{ margin: '10px auto' }} />
                     </Row>
                   ) : (
                     <>
-                      <FilmList 
-                        films={this.state.films} 
-                        setRatingHandler={(filmId, rating) => this.changeRatingHandler(filmId, rating)} 
+                      <FilmList
+                        films={films}
+                        // eslint-disable-next-line max-len
+                        setRatingHandler={(filmId, rating) => this.changeRatingHandler(filmId, rating)}
                       />
                       <Pagination
                         defaultCurrent={1}
-                        current={this.state.currentPage}
-                        total={this.state.totalItems}
+                        current={currentPage}
+                        total={totalItems}
                         defaultPageSize={20}
                         showQuickJumper={false}
                         showSizeChanger={false}
-                        hideOnSinglePage={true}
+                        hideOnSinglePage
                         style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}
                         onChange={(page) => this.setCurrentPage(page)}
                         itemRender={this.paginationItemRender}
@@ -174,6 +203,6 @@ export default class App extends Component {
           </Layout>
         </Context.Provider>
       </ConfigProvider>
-    )
+    );
   }
 }

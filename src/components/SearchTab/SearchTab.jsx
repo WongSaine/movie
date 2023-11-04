@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import { Input } from 'antd'
-import { debounce } from 'lodash'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react';
+import { Input } from 'antd';
+import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
 
-import FetcherService from '../../services/FetcherService.js'
-import { Context } from '../../services/Context.js'
+import FetcherService from '../../services/FetcherService';
+import { Context } from '../../services/Context';
 
 export default class SearchTab extends Component {
   constructor(props) {
@@ -34,17 +34,18 @@ export default class SearchTab extends Component {
         }
         return film
       })
-      setFilms(films); 
+      setFilms(films);
       setTotalItems(response.total_results);
     } catch(error) {
         this.setState({error: error});
-        setError(error);    
+        setError(error);
     }
     this.setState({isLoading: false});
   }
 
   componentDidMount() {
     this.checkQueryString();
+    this.debouncedQueryHandler({ target: { value: 'return' } });
   }
   
   componentDidUpdate(prevProps, prevState) {
@@ -74,7 +75,12 @@ export default class SearchTab extends Component {
     this.setState({queryString: e.target.value});
   }
   render() {
-    return <Input placeholder="Type to search..." onChange={this.debouncedQueryHandler} style={{ marginTop: '20px' }} />
+    return <Input
+      placeholder="Type to search..."
+      defaultValue="return"
+      onChange={this.debouncedQueryHandler}
+      style={{ marginTop: '20px' }} 
+    />
   }
 }
 
