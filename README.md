@@ -1,6 +1,6 @@
 # Movie
 
-[Ссылка на развёрнутое приложение.](https://WongSaine.github.io/movie)
+[Ссылка на развёрнутое приложение.](https://chimerical-maamoul-d6879e.netlify.app/)
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
