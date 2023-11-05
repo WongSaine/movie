@@ -13,35 +13,35 @@ export default class FilmCard extends Component {
   static contextType = Context;
 
   ellipsisText(text, words) {
-    const arr = text.split(' ')
+    const arr = text.split(' ');
     if (arr.length <= words) {
-      return text
+      return text;
     }
-    return arr.splice(0, words).join(' ') + ' ...'
+    return arr.splice(0, words).join(' ') + ' ...';
   }
 
   parseAndFormatDate(dateString) {
-    const date = Date.parse(dateString)
+    const date = Date.parse(dateString);
     if (isNaN(date)) {
-      return 'Unknown release date'
+      return 'Unknown release date';
     }
-    return format(date, 'PPP')
+    return format(date, 'PPP');
   }
 
   changeRatingHandler = async (rating) => {
-    this.props.setRatingHandler(this.props.film.id, rating)
+    this.props.setRatingHandler(this.props.film.id, rating);
   }
 
   getGenreName(genreId) {
-    const genre = this.context.genres.find((genreItem) => genreItem.id === genreId)
-    return genre.name
+    const genre = this.context.genres.find((genreItem) => genreItem.id === genreId);
+    return genre ? genre.name : 'Unknown genre';
   }
 
   ratingColor() {
-    if (this.props.film.vote_average <= 3) return '#E90000'
-    else if (this.props.film.vote_average <= 5) return '#E97E00'
-    else if (this.props.film.vote_average <= 7) return '#E9D100'
-    else return '#66E900'
+    if (this.props.film.vote_average <= 3) return '#E90000';
+    else if (this.props.film.vote_average <= 5) return '#E97E00';
+    else if (this.props.film.vote_average <= 7) return '#E9D100';
+    else return '#66E900';
   }
 
   render() {
