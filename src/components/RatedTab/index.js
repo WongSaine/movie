@@ -1,3 +1,3 @@
-import RatedTab from './RatedTab.jsx'
+import RatedTab from './RatedTab.jsx';
 
-export default RatedTab
+export default RatedTab;

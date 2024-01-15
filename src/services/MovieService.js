@@ -1,13 +1,13 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const apiKey = import.meta.env.VITE_API_KEY
-const baseURL = 'https://api.themoviedb.org/3/'
+const apiKey = import.meta.env.VITE_API_KEY;
+const baseURL = 'https://api.themoviedb.org/3/';
 
 export default class MovieService {
-  guestSessionId
+  guestSessionId;
 
-  async requestApi(url, data = {}, params = {}, method = 'GET') {
-    return await axios
+  requestApi = async (url, data = {}, params = {}, method = 'GET') => {
+    const result = await axios
       .request({
         url,
         baseURL,
@@ -21,35 +21,40 @@ export default class MovieService {
           'Content-Type': 'application/json;charset=utf-8',
         },
       })
-      .then((r) => {
-        return r.data
-      })
-  }
+      .then((r) => r.data);
+    return result;
+  };
 
   async search(query, page = 1) {
-    return await this.requestApi('search/movie', {}, { query, page })
+    const result = await this.requestApi('search/movie', {}, { query, page });
+    return result;
   }
 
   async createGuestSession() {
-    return await this.requestApi('authentication/guest_session/new').then((r) => {
-      this.guestSessionId = r.guest_session_id
-    })
+    const result = await this.requestApi('authentication/guest_session/new').then((r) => {
+      this.guestSessionId = r.guest_session_id;
+    });
+    return result;
   }
 
   async getRatedFilms(page) {
-    return await this.requestApi(`guest_session/${this.guestSessionId}/rated/movies`, {}, { page })
+    const result = await this.requestApi(`guest_session/${this.guestSessionId}/rated/movies`, {}, { page });
+    return result;
   }
 
   async addRatingToFilm(movieId, rating) {
-    return await this.requestApi(
+    const result = await this.requestApi(
       `movie/${movieId}/rating`,
       { value: rating },
       { guest_session_id: this.guestSessionId },
-      'POST'
-    )
+      // eslint-disable-next-line prettier/prettier
+      'POST',
+    );
+    return result;
   }
 
   async getGenreList() {
-    return await this.requestApi('genre/movie/list')
+    const result = await this.requestApi('genre/movie/list');
+    return result;
   }
 }

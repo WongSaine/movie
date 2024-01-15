@@ -1,29 +1,26 @@
-import React from 'react'
-import { Col, Row, Typography } from 'antd'
-import PropTypes from 'prop-types'
+import React from 'react';
+import { Col, Row, Typography } from 'antd';
+import PropTypes from 'prop-types';
 
-import FilmCard from '../FilmCard'
+import FilmCard from '../FilmCard';
 
-import classes from './FilmList.module.css'
+import classes from './FilmList.module.css';
 
-const { Text } = Typography
+const { Text } = Typography;
 
-const FilmList = ({ films, setRatingHandler }) => {
-  return (
-    <>
-      {films.length ? (
-        <Row className={classes['film-list']} gutter={[16, 16]}>
-          {films.map((film) => (
-            <Col key={film.id} xs={{ span: 22, offset: 0 }} md={{ span: 12 }}>
-              <FilmCard film={film} setRatingHandler={setRatingHandler} />
-            </Col>
-          ))}
-        </Row>
-      ) : (
-        <Text style={{ marginTop: '20px', display: 'block' }}>No one film found</Text>
-      )}
-    </>
-  )
+function FilmList({ films, setRatingHandler }) {
+  const result = films.length ? (
+    <Row className={classes['film-list']} gutter={[16, 16]}>
+      {films.map((film) => (
+        <Col key={film.id} xs={{ span: 22, offset: 0 }} md={{ span: 12 }}>
+          <FilmCard film={film} setRatingHandler={setRatingHandler} />
+        </Col>
+      ))}
+    </Row>
+  ) : (
+    <Text style={{ marginTop: '20px', display: 'block' }}>No one film found</Text>
+  );
+  return result;
 }
 
 FilmList.propTypes = {
@@ -43,13 +40,14 @@ FilmList.propTypes = {
       video: PropTypes.bool,
       vote_average: PropTypes.number,
       vote_count: PropTypes.number,
-    })
+      // eslint-disable-next-line prettier/prettier
+    }),
   ),
-  setRatingHandler: PropTypes.func.isRequired
-}
+  setRatingHandler: PropTypes.func.isRequired,
+};
 
 FilmList.defaultProps = {
   films: [],
-}
+};
 
-export default FilmList
+export default FilmList;

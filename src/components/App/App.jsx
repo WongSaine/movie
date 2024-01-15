@@ -1,14 +1,15 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React, { Component } from 'react';
 // eslint-disable-next-line object-curly-newline
-import { Alert, Col, ConfigProvider, Layout, Pagination, Row, Spin, Tabs } from 'antd';
+import { Alert, Col, ConfigProvider, Layout, Pagination, Spin, Tabs } from 'antd';
 
-import MovieService from './services/MovieService';
-import SearchTab from './components/SearchTab';
-import RatedTab from './components/RatedTab';
-import FilmList from './components/FilmList';
-import FetcherService from './services/FetcherService';
-import { Context } from './services/Context';
+import MovieService from '../../services/MovieService';
+import SearchTab from '../SearchTab';
+import RatedTab from '../RatedTab';
+import FilmList from '../FilmList';
+import ErrorBoundary from '../ErrorBoundary';
+import FetcherService from '../../services/FetcherService';
+import { Context } from '../../services/Context';
 
 const { Content } = Layout;
 
@@ -30,7 +31,7 @@ export default class App extends Component {
 
   async componentDidMount() {
     const { movie, fetcher } = this.state;
-    
+
     const createSession = async () => {
       const x = await movie.createGuestSession();
       return x;
@@ -161,23 +162,18 @@ export default class App extends Component {
         >
           <Layout style={{ backgroundColor: '#fff' }}>
             <Content>
-              <Col xs={{ span: 22, offset: 1 }} md={{ span: 17, offset: 4 }}>
-                <Tabs
-                  defaultActiveKey={1}
-                  items={tabs}
-                  style={{ background: '#fff', justifyContent: 'center' }}
-                  destroyInactiveTabPane
-                  onChange={this.changeTabHandler}
-                />
-
-                <>
-                  {error && <Alert type="error" message={error} style={{ margin: '10px auto' }} />}
-                  {isLoading ? (
-                    <Row>
-                      <Spin tip="Loading..." style={{ margin: '10px auto' }} />
-                    </Row>
-                  ) : (
-                    <>
+              <ErrorBoundary>
+                <Col xs={{ span: 22, offset: 1 }} md={{ span: 17, offset: 4 }}>
+                  <Tabs
+                    defaultActiveKey={1}
+                    items={tabs}
+                    style={{ background: '#fff', justifyContent: 'center' }}
+                    destroyInactiveTabPane
+                    onChange={this.changeTabHandler}
+                  />
+                  <>
+                    {error && <Alert type="error" message={error} style={{ margin: '10px auto' }} />}
+                    <Spin tip="Loading..." style={{ margin: '10px auto' }} spinning={isLoading}>
                       <FilmList
                         films={films}
                         // eslint-disable-next-line max-len
@@ -195,10 +191,10 @@ export default class App extends Component {
                         onChange={(page) => this.setCurrentPage(page)}
                         itemRender={this.paginationItemRender}
                       />
-                    </>
-                  )}
-                </>
-              </Col>
+                    </Spin>
+                  </>
+                </Col>
+              </ErrorBoundary>
             </Content>
           </Layout>
         </Context.Provider>

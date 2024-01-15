@@ -1,82 +1,91 @@
-import React, { Component } from 'react'
-import { Card, Typography } from 'antd'
-import PropTypes from 'prop-types'
-import { format } from 'date-fns'
+import React, { Component } from 'react';
+import { Card, Typography } from 'antd';
+import PropTypes from 'prop-types';
+import { format } from 'date-fns';
 
-import StarRating from '../StarRating'
-import { Context } from '../../services/Context.js'
-import classes from './FilmCard.module.css'
+import StarRating from '../StarRating';
+import { Context } from '../../services/Context';
 
-const { Title, Text, Paragraph } = Typography
+import classes from './FilmCard.module.css';
+
+const { Title, Text, Paragraph } = Typography;
 
 export default class FilmCard extends Component {
+  // eslint-disable-next-line react/static-property-placement
   static contextType = Context;
 
-  ellipsisText(text, words) {
+  changeRatingHandler = async (rating) => {
+    const { setRatingHandler, film } = this.props;
+    setRatingHandler(film.id, rating);
+  };
+
+  ellipsisText = (text, words) => {
     const arr = text.split(' ');
     if (arr.length <= words) {
       return text;
     }
-    return arr.splice(0, words).join(' ') + ' ...';
-  }
+    return `${arr.splice(0, words).join(' ')} ...`;
+  };
 
-  parseAndFormatDate(dateString) {
+  parseAndFormatDate = (dateString) => {
     const date = Date.parse(dateString);
-    if (isNaN(date)) {
+    if (Number.isNaN(date)) {
       return 'Unknown release date';
     }
     return format(date, 'PPP');
-  }
+  };
 
-  changeRatingHandler = async (rating) => {
-    this.props.setRatingHandler(this.props.film.id, rating);
-  }
-
-  getGenreName(genreId) {
-    const genre = this.context.genres.find((genreItem) => genreItem.id === genreId);
+  getGenreName = (genreId) => {
+    const { genres } = this.context;
+    const genre = genres.find((genreItem) => genreItem.id === genreId);
     return genre ? genre.name : 'Unknown genre';
-  }
+  };
 
-  ratingColor() {
-    if (this.props.film.vote_average <= 3) return '#E90000';
-    else if (this.props.film.vote_average <= 5) return '#E97E00';
-    else if (this.props.film.vote_average <= 7) return '#E9D100';
-    else return '#66E900';
-  }
+  ratingColor = () => {
+    const { film } = this.props;
+    if (film.vote_average <= 3) return '#E90000';
+    if (film.vote_average <= 5) return '#E97E00';
+    if (film.vote_average <= 7) return '#E9D100';
+    return '#66E900';
+  };
 
   render() {
     const { film } = this.props;
     return (
       <Card
-        cover={
+        /* eslint-disable prettier/prettier */
+        cover={(
           <img
             alt={film.title}
             src={
-              film.poster_path ? `https://image.tmdb.org/t/p/w500/${film.poster_path}` : 'https://via.placeholder.com/200'
+              film.poster_path
+                ? `https://image.tmdb.org/t/p/w500/${film.poster_path}`
+                : 'https://via.placeholder.com/200'
             }
             className={classes.filmCard__image}
           />
-        }
+        )}
         className={classes.filmCard}
       >
         <div className={classes.filmCard__content}>
           <div className={classes.filmCard__headerWrapper}>
             <Title level={3} className={classes.filmCard__header}>
               {this.ellipsisText(film.title, 3)}
-              <span className={classes.filmCard__rating} style={{ borderColor: this.ratingColor() }}>
+              <span
+                className={classes.filmCard__rating}
+                style={{ borderColor: this.ratingColor() }}
+              >
                 {film.vote_average.toFixed(1)}
               </span>
             </Title>
-            {film.release_date && <Text type={'secondary'}>{this.parseAndFormatDate(film.release_date)}</Text>}
+            {film.release_date && <Text type="secondary">{this.parseAndFormatDate(film.release_date)}</Text>}
             {!!film.genre_ids.length && (
               <div className={classes.filmCard__genres}>
-                {film.genre_ids.map((genreId) => {
-                  return (
-                    <Text code key={genreId} className={classes.filmCard__genre}>
-                      {this.getGenreName(genreId)}
-                    </Text>
-                  )
-                })}
+                {film.genre_ids.map((genreId) => (
+                  <Text code key={genreId} className={classes.filmCard__genre}>
+                    {this.getGenreName(genreId)}
+                  </Text>
+                ))}
               </div>
             )}
           </div>
@@ -90,7 +99,8 @@ export default class FilmCard extends Component {
           </div>
         </div>
       </Card>
-    )
+      /* eslint-enable prettier/prettier */
+    );
   }
 }
 
@@ -111,9 +121,9 @@ FilmCard.propTypes = {
     vote_average: PropTypes.number,
     vote_count: PropTypes.number,
     rating: PropTypes.oneOfType([PropTypes.number]),
-  }).isRequired,
-}
+  }),
+};
 
 FilmCard.defaultProps = {
   film: {},
-}
+};

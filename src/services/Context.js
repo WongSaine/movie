@@ -1,3 +1,4 @@
-import { createContext } from 'react'
+import { createContext } from 'react';
 
-export const Context = createContext(null)
+// eslint-disable-next-line import/prefer-default-export
+export const Context = createContext(null);

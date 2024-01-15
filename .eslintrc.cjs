@@ -21,32 +21,36 @@ module.exports = {
       }
     },
   rules: {
-      "indent": ["error", 2],
-      "prettier/prettier": "error",
-      "linebreak-style": [0, "unix"],
-      "quotes": ["error", "single", { "avoidEscape": true }],
-      "semi": ["error", "always"],
-      "react/react-in-jsx-scope": "off",
-      "react/prop-types": 0,
-      "import/no-unresolved": [2, { "caseSensitive": false }],
-      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-      "import/order": [
-        2,
-        {
-          "groups": [
-            "builtin",
-            "external",
-            "internal",
-            "parent",
-            "sibling",
-            "index"
-          ],
-          "newlines-between": "always"
-        }
-      ]
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
+    "indent": ["error", 2, {"SwitchCase" : 1, "ObjectExpression": 1}],
+    "prettier/prettier": "error",
+    "linebreak-style": [0, "unix"],
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "semi": ["error", "always"],
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": 0,
+    "class-methods-use-this": ["error", { "enforceForClassFields": false }],
+    "import/no-unresolved": [2, { "caseSensitive": false }],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "import/order": [
+      2,
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "newlines-between": "always"
+      }
+    ]
   },
   ignorePatterns: [
-    'src/',
     '*.cjs',
     'vite.config.js',
     'build/',

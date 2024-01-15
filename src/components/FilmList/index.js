@@ -1,3 +1,3 @@
-import FilmList from './FilmList.jsx'
+import FilmList from './FilmList.jsx';
 
-export default FilmList
+export default FilmList;

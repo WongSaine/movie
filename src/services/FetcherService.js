@@ -2,7 +2,7 @@ export default class FetcherService {
   constructor() {
     this.state = {
       loading: false,
-      error: null
+      error: null,
     };
   }
 
@@ -12,13 +12,13 @@ export default class FetcherService {
 
   fetch = async (callback, errorCallback) => {
     this.setState({ loading: true });
-  
+
     try {
-      await callback()  
+      await callback();
     } catch (error) {
       errorCallback(error);
     }
-  
+
     this.setState({ loading: false });
-  }
+  };
 }

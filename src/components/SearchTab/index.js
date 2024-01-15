@@ -1,3 +1,3 @@
-import SearchTab from './SearchTab.jsx'
+import SearchTab from './SearchTab.jsx';
 
-export default SearchTab
+export default SearchTab;

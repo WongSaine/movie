@@ -1,3 +1,3 @@
-import StarRating from './StarRating.jsx'
+import StarRating from './StarRating.jsx';
 
-export default StarRating
+export default StarRating;
